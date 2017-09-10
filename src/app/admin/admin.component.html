@@ -7,17 +7,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      <a class="navbar-brand">Dashboard</a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a clickable (click)="setDisplayVacancy()">View Jobs <span class="sr-only">(current)</span></a></li>
+        <li><a clickable (click)="setDisplayJobs()">View Jobs <span class="sr-only">(current)</span></a></li>
         <li><a clickable (click)="setDisplayCompanyList()">View Companies</a></li>
         <li><a clickable (click)="setDisplayStudentList()">View Students</a></li>
-        <li><a clickable (click)="setDisplayVacancy()">Post Vacancy</a></li>
+        <li><a clickable (click)="setDisplayVacancy()">Post Notification</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a clickable (click)="setDisplayVacancyList()">Notifications</a></li>
+        
        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{authService.userName}}<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -32,9 +34,6 @@
   </div>
 </nav>
 
-<p>
-  Admin works!
-</p>
 
 <!-- Profile Form  -->
 <div class="AdminDetail" *ngIf="display">
@@ -193,4 +192,57 @@
    </div>
   </div>
 <!-- Job View  -->
+
+
+<!-- Vacancy Form  -->
+<div class="VacancyForm" *ngIf="displayVacancy">
+  <form class="form-horizontal col-xs-12 col-md-6 col-md-offset-2" #f="ngForm" (ngSubmit)="onSubmitNotification(f.value)" >
+  <fieldset >
+    <hr>
+    <legend class="text-center">NOTIFICATION</legend>
+    
+
+    <div class="form-group">
+      <div class="col-xs-9 col-xs-offset-3">
+        <textarea class="form-control" rows="15"  name="notifytext" ngModel placeholder="Notification here"></textarea>
+        <span class="help-block">Notification Description.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-10 col-md-9 col-md-offset-3">
+        <button type="reset" class="btn btn-warning">Cancel</button>
+        <button type="submit" class="btn btn-primary pull-right">Update!</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+</div>
+<!-- Vacancy Form  -->
+
+<!-- Notification View  -->
+
+  <div class="notification" *ngIf="isViewNotification">
+    <legend class="text-center">NOTIFICATIONS</legend>
+    
+    <div class="col-xs-12 col-md-8 col-md-offset-2" id="container" *ngFor="let post of (NotifcationsListService.notifications$ | async); let index=index;trackBy: trackById">
+     <button type="button" class="close pull-right" data-dismiss="alert" (click)="deleteJob(post,i)" style="top:0px; right:0px;">&times;</button>
+      <div class="row">
+   
+          <div class="listgroup list-group">
+            <p class="list-item text-center h3"> {{post.name}}</p>      
+          </div>
+          
+        <div class="footer">
+          <i class="h6 date"><b>Date</b>:{{post.date}}</i>
+          <span class="companyName">{{post.owner}}</span>
+       
+        </div>
+    </div>
+     
+   </div>
+  </div>
+<!-- Notification View  -->
+
 

@@ -7,6 +7,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import {FirebaseListObservable } from 'angularfire2/database';
 import { GetCompanylistService } from '../get-companylist.service';
 import { GetjoblistService } from '../getjoblist.service';
+import { NotifcationsListService } from '../notifcations-list.service';
 
 @Component({
   selector: 'app-student',
@@ -20,10 +21,12 @@ isCorrect:boolean=false;
 displayCompanyList:boolean=false;
 displayVacancy:boolean=false;
 isViewJob:boolean=false;
+ isViewNotification:boolean=false;
+
 date:string=new DatePipe('en-US').transform(new Date(), 'dd/MM/yyyy');
 details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
 
-  constructor(private router:Router,public authService: AuthService,private af:AngularFireDatabase,public GetCompanylistService:GetCompanylistService,public GetjoblistService:GetjoblistService) {}
+  constructor(private router:Router,public authService: AuthService,private af:AngularFireDatabase,public GetCompanylistService:GetCompanylistService,public GetjoblistService:GetjoblistService,public NotifcationsListService:NotifcationsListService) {}
   ngOnInit() 
   {
     if(this.authService.userName=="")
@@ -85,6 +88,7 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
     this.displayVacancy=false;    
     this.displayCompanyList=false;
     this.isViewJob=false;
+    this.isViewNotification=false;   
     
   }
   setDisplayCompanyList()
@@ -93,6 +97,7 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
     this.displayVacancy=false;    
     this.displayCompanyList=true;
     this.isViewJob=false;
+    this.isViewNotification=false;   
     
   }
   setDisplayVacancy()
@@ -101,9 +106,18 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
     this.display=false;
     this.displayCompanyList=false;
     this.displayVacancy=true;
-    this.isViewJob=true;     
+    this.isViewJob=true;
+    this.isViewNotification=false;   
+    
   }
-
+setDisplayVacancyList()
+  {
+    this.isViewJob=false;
+    this.display=false;   
+    this.displayCompanyList=false;
+    this.displayVacancy=false;   
+    this.isViewNotification=true;   
+  }
 changeFlag()
 {
    this.isformSubmitted=!this.isformSubmitted;

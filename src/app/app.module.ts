@@ -8,6 +8,7 @@ import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from './auth.service';
 import { GetstudentlistService } from './getstudentlist.service';
 import { GetjoblistService } from './getjoblist.service';
+import { NotifcationsListService } from './notifcations-list.service';
 import { GetCompanylistService } from './get-companylist.service';
 
 import { educations } from './educationList';
@@ -20,18 +21,15 @@ import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable 
 import * as firebase from 'firebase/app';
 import { AdminComponent } from './admin/admin.component';
 import { CompanyComponent } from './company/company.component';
-import { HeaderComponent } from './header/header.component';
 import 'rxjs/add/observable/fromPromise';
-import { StudentDetailComponent } from './student-detail/student-detail.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     StudentComponent,
     AdminComponent,
-    CompanyComponent,
-    HeaderComponent,
-    StudentDetailComponent
+    CompanyComponent
   ],
   imports: [
     BrowserModule,
@@ -51,11 +49,6 @@ import { StudentDetailComponent } from './student-detail/student-detail.componen
         pathMatch:'full',
          canActivate:[AtuhGuard],
         component:AdminComponent
-      },
-      {
-        path:'studentprofile',
-        component:StudentDetailComponent,
-        outlet:'sd'
       },
       {
         path:'company',
@@ -79,7 +72,7 @@ import { StudentDetailComponent } from './student-detail/student-detail.componen
       }
     ])
   ],
-  providers: [GetjoblistService,GetCompanylistService,GetstudentlistService,AuthService,AtuhGuard,AngularFireDatabase,AngularFireAuth],
+  providers: [NotifcationsListService,GetjoblistService,GetCompanylistService,GetstudentlistService,AuthService,AtuhGuard,AngularFireDatabase,AngularFireAuth],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

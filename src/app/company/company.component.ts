@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database';
 import {FirebaseListObservable } from 'angularfire2/database';
 import { DatePipe } from '@angular/common';
+import { NotifcationsListService } from '../notifcations-list.service';
 
 @Component({
   selector: 'app-company',
@@ -13,7 +14,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./company.component.css']
 })
 export class CompanyComponent implements OnInit {
-constructor(private router:Router,public authService: AuthService,public studentlistService:GetstudentlistService,private af:AngularFireDatabase) { 
+constructor(private router:Router,public authService: AuthService,public studentlistService:GetstudentlistService,private af:AngularFireDatabase,public NotifcationsListService:NotifcationsListService) { 
 
 }
  details={uid:"",name:"", address:"",cellNum:"",key:""};
@@ -22,6 +23,8 @@ constructor(private router:Router,public authService: AuthService,public student
  displayVacancy:boolean=false; 
  isformSubmitted:boolean=false;
  isCorrect:boolean=false;
+  isViewNotification:boolean=false;
+
  educations=educations;
  date:string=new DatePipe('en-US').transform(new Date(), 'dd/MM/yyyy');
   posts:Object[]=[];
@@ -90,6 +93,8 @@ isViewJob:boolean=false;
     this.displayVacancy=false; 
     this.isViewJob=false;
     this.display=true;
+        this.isViewNotification=false;   
+
   }
   setDisplayStudentList()
   {
@@ -97,6 +102,8 @@ isViewJob:boolean=false;
     this.displayVacancy=false;    
     this.isViewJob=false;
     this.displayStudentList=true;
+        this.isViewNotification=false;   
+
   }
   setDisplayVacancy()
   {
@@ -104,7 +111,8 @@ isViewJob:boolean=false;
     this.displayStudentList=false;
     this.isViewJob=false;
     this.displayVacancy=true; 
-    
+        this.isViewNotification=false;   
+
   }
   setDisplayLog()
   {
@@ -112,7 +120,16 @@ isViewJob:boolean=false;
     this.displayStudentList=false;
     this.isViewJob=true;
     this.displayVacancy=false; 
-    
+        this.isViewNotification=false;   
+
+  }
+   setDisplayVacancyList()
+  {
+    this.isViewJob=false;
+    this.display=false;   
+    this.displayStudentList=false;
+    this.displayVacancy=false;   
+    this.isViewNotification=true;   
   }
   onSubmit(data)
   {

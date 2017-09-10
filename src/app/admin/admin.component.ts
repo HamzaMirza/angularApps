@@ -8,6 +8,8 @@ import {FirebaseListObservable } from 'angularfire2/database';
 import { DatePipe } from '@angular/common';
 import { GetCompanylistService } from '../get-companylist.service';
 import { GetjoblistService } from '../getjoblist.service';
+import { NotifcationsListService } from '../notifcations-list.service';
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -20,6 +22,7 @@ export class AdminComponent implements OnInit {
  displayVacancy:boolean=false; 
  isformSubmitted:boolean=false;
  isCorrect:boolean=false;
+ isViewNotification:boolean=false;
  educations=educations;
 displayCompanyList:boolean=false;
 
@@ -28,7 +31,7 @@ isViewJob:boolean=false;
   posts:Object[]=[];
 
   
- constructor(private router:Router,public authService: AuthService,public studentlistService:GetstudentlistService,private af:AngularFireDatabase,public GetCompanylistService:GetCompanylistService,public GetjoblistService:GetjoblistService) {}
+ constructor(private router:Router,public authService: AuthService,public studentlistService:GetstudentlistService,private af:AngularFireDatabase,public GetCompanylistService:GetCompanylistService,public GetjoblistService:GetjoblistService,public NotifcationsListService:NotifcationsListService) {}
   ngOnInit() 
   {
     if(this.authService.userName=="")
@@ -83,6 +86,7 @@ updateTodo2(data): void
     this.displayCompanyList=false;
     this.isViewJob=false;
     this.display=true;
+    this.isViewNotification=false; 
   }
   setDisplayStudentList()
   {
@@ -91,6 +95,7 @@ updateTodo2(data): void
     this.isViewJob=false;
     this.display=false;   
     this.displayStudentList=true;
+    this.isViewNotification=false; 
   }
    setDisplayCompanyList()
   {
@@ -99,17 +104,38 @@ updateTodo2(data): void
     this.display=false;   
     this.displayStudentList=false;
     this.displayCompanyList=true;
-    
+    this.isViewNotification=false; 
   }
   setDisplayVacancy()
+  {
+    this.GetjoblistService.loadhasApplied(this.authService.uid); 
+    this.displayCompanyList=false;
+    this.isViewJob=false;
+    this.display=false;   
+    this.displayStudentList=false;
+    this.displayVacancy=true;    
+    this.isViewNotification=false; 
+  }
+  setDisplayJobs()
   {
     this.GetjoblistService.loadhasApplied(this.authService.uid); 
     this.displayCompanyList=false;
     this.isViewJob=true;
     this.display=false;   
     this.displayStudentList=false;
-    this.displayVacancy=true;    
+    this.displayVacancy=false;   
+    this.isViewNotification=false; 
     
+  }
+  setDisplayVacancyList()
+  {
+    this.GetjoblistService.loadhasApplied(this.authService.uid); 
+    this.displayCompanyList=false;
+    this.isViewJob=false;
+    this.display=false;   
+    this.displayStudentList=false;
+    this.displayVacancy=false;   
+    this.isViewNotification=true;   
   }
   onSubmit(data)
   {
@@ -117,6 +143,28 @@ updateTodo2(data): void
     this.updateTodo2(data);
     this.isformSubmitted=true;
   }
+  onSubmitNotification(data)
+  {
+    this.isCorrect=false;
+    this.uploadNotification(data);
+    this.isformSubmitted=true;
+  }
+  uploadNotification(data): void
+  {
+    this.af.list('/notification/').push({name:data.notifytext,owner:this.details.name,date:this.date,key:""}).then(
+      success=>{this.isCorrect=true;
+      this.af.list('/notification', { preserveSnapshot: true}).subscribe(snapshots=>
+                 {
+                   this.af.object('/notification/' + snapshots[snapshots.length-1].key)
+                            .update({key:snapshots[snapshots.length-1].key});
+                   
+              this.displayVacancy=false;   
+        
+                  });},
+      error=>this.isCorrect=false
+    ); 
+    console.log("added");   
+ }
 changeFlag()
   {
     this.isformSubmitted=!this.isformSubmitted;

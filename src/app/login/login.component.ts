@@ -157,6 +157,7 @@ signup() {
           });
             if(!tf) 
             {
+              this.error="Account not found";
               this.logout();
             }
          },
