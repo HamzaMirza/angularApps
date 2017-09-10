@@ -148,7 +148,7 @@ showInput:number=-1;
  this.inputCGPA=data.CGPA;
 
 }
-sTD(data,i)
+saveStd(data,i)
 {
   if(this.inputName!='' &&this.inputfatherName!='' &&this.inputCellNum!=''  &&this.inputeducation!='' &&this.inputCGPA!='' )
   {
@@ -162,7 +162,7 @@ sTD(data,i)
 }
 updateStudent(data,i): void {
    this.isformSubmitted=true;
-  this.af.object('/usersDetails/' + data.key)
+  this.af.object('/usersDetails_student/' + data.key)
     .update({name:this.inputName, fatherName:this.inputfatherName,cellNum:this.inputCellNum,CGPA: this.inputCGPA,education: this.inputeducation}).then(
       success=>{
         this.studentlistService.studentList[i]={name:this.inputName, fatherName:this.inputfatherName,cellNum:this.inputCellNum,CGPA: this.inputCGPA,education: this.inputeducation};
@@ -186,7 +186,7 @@ deleteStd(i:number,data)
    this.af.object('/users/' + this.studentlistService.studentkey[i]).remove().then(
      success=>{
 
-          this.af.object('/usersDetails/' + data.key).remove().then(
+          this.af.object('/usersDetails_student/' + data.key).remove().then(
             success=>{
               console.log("account delted",this.studentlistService.studentkey[i],",",data.key);
               this.isCorrect=true;
@@ -214,7 +214,7 @@ delete(i:number,data)
    this.af.object('/users/' + this.GetCompanylistService.companieskey[i]).remove().then(
      success=>{
 
-          this.af.object('/usersDetails/' + data.key).remove().then(
+          this.af.object('/usersDetails_company/' + data.key).remove().then(
             success=>{
               this.isCorrect=true;
               console.log("account delted",this.GetCompanylistService.companieskey[i],",",data.key);
@@ -242,7 +242,7 @@ save(data,i)
 }
 updateCompany(data,i): void {
    this.isformSubmitted=true;
-  this.af.object('/usersDetails/' + data.key)
+  this.af.object('/usersDetails_company/' + data.key)
     .update({name:this.inputName, address:this.inputAddress,cellNum:this.inputCellNum}).then(
       success=>{
         this.GetCompanylistService.companyList[i]={name:this.inputName, address:this.inputAddress,cellNum:this.inputCellNum};

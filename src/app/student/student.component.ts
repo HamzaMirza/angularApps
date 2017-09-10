@@ -40,7 +40,7 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
           });
           
     }
-       this.af.list('/usersDetails', { preserveSnapshot: true}).subscribe(snapshots=>
+       this.af.list('/usersDetails_student', { preserveSnapshot: true}).subscribe(snapshots=>
           {
             snapshots.forEach(snapshot => 
             {
@@ -66,7 +66,7 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
   updateTodo2(data): void
   {
    
-    this.af.object('/usersDetails/' + this.details.key)
+    this.af.object('/usersDetails_student/' + this.details.key)
     .update({name:data.name, fatherName:data.fatherName,education:data.education,CGPA:data.CGPA,cellNum:data.cellNum,key:this.details.key}).then(
       success=>this.isCorrect=true,
       error=>this.isCorrect=false

@@ -7,8 +7,12 @@ export class GetstudentlistService {
   studentsUid:string[]=[];
   studentList:Object[]=[];
   studentkey:string[]=[];
+    student$: FirebaseListObservable<any[]>;
+
   constructor(private af:AngularFireDatabase) 
   { 
+        this.student$ = this.af.list('/usersDetails_student/');
+
     this.af.list('/users', { preserveSnapshot: true}).subscribe(snapshots=>
           {
             snapshots.forEach(snapshot => 
@@ -22,7 +26,7 @@ export class GetstudentlistService {
             });
           });
           let index=0;
-     this.af.list('/usersDetails', { preserveSnapshot: true}).subscribe(snapshots=>
+     this.af.list('/usersDetails_student', { preserveSnapshot: true}).subscribe(snapshots=>
           {
             snapshots.forEach(snapshot => 
             {

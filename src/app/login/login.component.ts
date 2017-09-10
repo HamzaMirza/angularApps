@@ -64,7 +64,7 @@ signup() {
               this.addTodo(this.email,this.typeSelected,this.authService.uid,this.userName);
                console.log("data inserted",this.email,this.typeSelected,this.authService.uid,this.userName );
                this.authService.userName=this.userName;
-               if(this.typeSelected=="Company" || this.typeSelected=="Admin")
+               if(this.typeSelected=="Admin")
                 {
                   this.af.list('/usersDetails').push({uid:this.authService.uid, name: this.userName, address:"",cellNum:"",key:""});
                   
@@ -82,8 +82,40 @@ signup() {
                   });
                 
                 }
+               else if(this.typeSelected=="Company")
+                {
+                  this.af.list('/usersDetails_company').push({uid:this.authService.uid, name: this.userName, address:"",cellNum:"",key:""});
+                  
+                  this.af.list('/usersDetails_company', { preserveSnapshot: true}).subscribe(snapshots=>
+                 {
+                    snapshots.forEach(snapshot => 
+                    {
+                        if(snapshot.val().uid==this.authService.uid)
+                        {
+                          
+                          this.af.object('/usersDetails_company/' + snapshot.key)
+                            .update({key:snapshot.key});
+                        }
+                    });
+                  });
+                
+                }
                else if(this.typeSelected=="Student")
-               this.af.list('/usersDetails').push({uid:this.authService.uid, name: this.userName, fatherName:"",education:"",CGPA:"",cellNum:"",key:""});
+               {
+                  this.af.list('/usersDetails_student').push({uid:this.authService.uid, name: this.userName, fatherName:"",education:"",CGPA:"",cellNum:"",key:""});
+                  this.af.list('/usersDetails_student', { preserveSnapshot: true}).subscribe(snapshots=>
+                    {
+                        snapshots.forEach(snapshot => 
+                        {
+                            if(snapshot.val().uid==this.authService.uid)
+                            {
+                              
+                              this.af.object('/usersDetails_student/' + snapshot.key)
+                                .update({key:snapshot.key});
+                            }
+                        });
+                      });
+               }
                 
                this.login();
           },

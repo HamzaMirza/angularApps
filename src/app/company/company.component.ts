@@ -44,7 +44,7 @@ isViewJob:boolean=false;
           });
           
     }
-       this.af.list('/usersDetails', { preserveSnapshot: true}).subscribe(snapshots=>
+       this.af.list('/usersDetails_company', { preserveSnapshot: true}).subscribe(snapshots=>
           {
             snapshots.forEach(snapshot => 
             {
@@ -66,11 +66,11 @@ isViewJob:boolean=false;
                 }
             });
           })
-      
+      console.log(this.studentlistService.studentList);
   }
   updateTodo2(data): void
   {
-    this.af.object('/usersDetails/' + this.details.key)
+    this.af.object('/usersDetails_company/' + this.details.key)
     .update({name:data.name, address:data.address,cellNum:data.cellNum,key:this.details.key}).then(
       success=>this.isCorrect=true,
       error=>this.isCorrect=false

@@ -10,7 +10,7 @@ export class GetCompanylistService {
   companies$: FirebaseListObservable<any[]>;
   constructor(private af:AngularFireDatabase) 
   { 
-    this.companies$ = this.af.list('/usersDetails/');
+    this.companies$ = this.af.list('/usersDetails_company/');
     this.af.list('/users', { preserveSnapshot: true}).subscribe(snapshots=>
           {
             snapshots.forEach(snapshot => 
@@ -23,7 +23,7 @@ export class GetCompanylistService {
             });
           });
           let index=0;
-     this.af.list('/usersDetails', { preserveSnapshot: true}).subscribe(snapshots=>
+     this.af.list('/usersDetails_company', { preserveSnapshot: true}).subscribe(snapshots=>
           {
             snapshots.forEach(snapshot => 
             {      

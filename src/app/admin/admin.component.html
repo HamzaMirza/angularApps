@@ -85,7 +85,7 @@
       <th>Phone #</th>
     </tr>
   </thead>
-  <tbody *ngFor="let detail of studentlistService.studentList;let i=index;">
+  <tbody *ngFor="let detail of (studentlistService.student$|async);let i=index;">
     <tr *ngIf="showInput!=i; let item=detail; then original; else TobeSaved;">
   
     </tr>
@@ -124,7 +124,7 @@
       <th>Controls</th>
     </tr>
   </thead>
-  <tbody *ngFor="let detail of GetCompanylistService.companyList;let i=index;"  >
+  <tbody *ngFor="let detail of (GetCompanylistService.companies$|async);let i=index;"  >
        <tr *ngIf="showInput!=i; let item=detail; then original; else TobeSaved;">
           </tr>
     
