@@ -1,0 +1,1 @@
+export let educations:string[]=['PhD','Masters','Bachelors','High School','Diplomas'];

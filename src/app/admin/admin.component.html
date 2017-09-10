@@ -1,0 +1,196 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a clickable (click)="setDisplayVacancy()">View Jobs <span class="sr-only">(current)</span></a></li>
+        <li><a clickable (click)="setDisplayCompanyList()">View Companies</a></li>
+        <li><a clickable (click)="setDisplayStudentList()">View Students</a></li>
+        <li><a clickable (click)="setDisplayVacancy()">Post Vacancy</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{authService.userName}}<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a clickable (click)="setDisplay()" id="editPbtn">Edit Profile</a></li>
+            <li class="divider"></li>
+           
+          </ul>
+        </li>
+        <li><span id="logoutBtn"class="btn btn-lg glyphicon glyphicon-off" clickable (click)="logout()"></span></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<p>
+  Admin works!
+</p>
+
+<!-- Profile Form  -->
+<div class="AdminDetail" *ngIf="display">
+  <form class="form-horizontal col-xs-12 col-md-6 col-md-offset-2" #f="ngForm" (ngSubmit)="onSubmit(f.value)" >
+  <fieldset >
+    <legend class="text-center">PROFILE</legend>
+    <div class="form-group">
+      <label for="inputName" class="col-xs-3 control-label">Name</label>
+      <div  class="col-xs-9">
+        <input type="text" class="form-control" name="name" placeholder="Full Name Here" [ngModel]="details.name" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputFName" class="col-xs-3 control-label">Address</label>
+      <div class="col-xs-9">
+        <input type="text" class="form-control" name="address" placeholder="Address Here" [ngModel]="details.address">
+      </div>
+    </div>
+      <div class="form-group">
+      <label for="inputnum" class="col-xs-3 control-label">Cell #</label>
+      <div class="col-xs-9">
+        <input type="number" class="form-control" name="cellNum" placeholder="Phone Number" [ngModel]="details.cellNum">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-xs-10 col-md-9 col-md-offset-3">
+        <button type="reset" class="btn btn-warning">Cancel</button>
+        <button type="submit" class="btn btn-primary pull-right">Update!</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+</div>
+<!-- Profile Form  -->
+
+
+<!-- View Student List  -->
+<div class="studentView" *ngIf="displayStudentList">
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>Sr#</th>
+      <th>Student Name</th>
+      <th>Father's Name</th>
+      <th>Qualification</th>
+      <th>CGPA</th>
+      <th>Phone #</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let detail of studentlistService.studentList;let i=index;">
+    <tr *ngIf="showInput!=i; let item=detail; then original; else TobeSaved;">
+  
+    </tr>
+     <ng-template #original>
+        <td>{{i+1}}</td>
+        <td>{{detail.name}}</td>
+        <td>{{detail.fatherName}}</td>
+        <td>{{detail.education}}</td>
+        <td>{{detail.CGPA}}</td>
+        <td>{{detail.cellNum}}</td>     
+        <td> <span class="close" (click)="deleteStd(i,detail)">&times;</span><span class="glyphicon glyphicon-list-alt edited" (click)="editStd(i,detail)" clickable></span></td>      
+      </ng-template>
+      <ng-template #TobeSaved>
+          <td>{{i+1}}</td>
+          <td><input type="text" value="{{detail.name}}" [(ngModel)]="inputName"></td>
+          <td><input type="text" value="{{detail.fatherName}}" [(ngModel)]="inputfatherName"></td>
+          <td><input type="text" value="{{detail.education}}" [(ngModel)]="inputeducation"></td>
+          <td><input type="text" value="{{detail.CGPA}}" [(ngModel)]="inputCGPA"></td>
+          <td><input type="text" value="{{detail.cellNum}}" [(ngModel)]="inputCellNum"></td>
+          <td><span class="btn btn-sm btn-success save" (click)="saveStd(detail,i)">SAVE</span></td>
+      </ng-template>
+  </tbody>
+</table> 
+</div>
+<!-- View Student List  -->
+
+<!-- View Company List  -->
+<div class="companyView" *ngIf="displayCompanyList">
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>Sr#</th>
+      <th>Company Name</th>
+      <th>Address</th>
+      <th>Phone #</th>
+      <th>Controls</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let detail of GetCompanylistService.companyList;let i=index;"  >
+       <tr *ngIf="showInput!=i; let item=detail; then original; else TobeSaved;">
+          </tr>
+    
+     <ng-template #original>
+          <td>{{i+1}}</td>
+          <td>{{detail.name}}</td>
+          <td>{{detail.address}}</td>
+          <td>{{detail.cellNum}}</td>
+          <td> <span class="close" (click)="delete(i,detail)">&times;</span><span class="glyphicon glyphicon-list-alt edited" (click)="edit(i,detail)" clickable></span></td>      
+      </ng-template>
+       
+    
+     <ng-template #TobeSaved>
+          <td>{{i+1}}</td>
+          <td><input type="text" value="{{detail.name}}" [(ngModel)]="inputName"></td>
+          <td><input type="text" value="{{detail.address}}" [(ngModel)]="inputAddress"></td>
+          <td><input type="text" value="{{detail.cellNum}}" [(ngModel)]="inputCellNum"></td>
+          <td><span class="btn btn-sm btn-success save" (click)="save(detail,i)">SAVE</span></td>
+      </ng-template>
+  </tbody>
+</table> 
+</div>
+<!-- View Company List  -->
+
+<!-- Alert MSG  -->
+<div  *ngIf="isformSubmitted">
+  <div  *ngIf="isCorrect;then success;else danger;">
+  </div>
+</div>
+<ng-template #success>
+  <div class="alert alert-dismissible alert-success text-center msgShow"  >
+  <button type="button" class="close" data-dismiss="alert" (click)="changeFlag()">&times;</button>
+  <strong> Updated successfully!</strong>
+  </div>
+</ng-template>
+<ng-template #danger>
+  <div class="alert alert-dismissible alert-danger text-center msgShow"  >
+  <button type="button" class="close" data-dismiss="alert" (click)="changeFlag()">&times;</button>
+  <strong> Update Failure!</strong>
+  </div>
+</ng-template>
+<!-- Alert MSG  -->
+
+<!-- Job View  -->
+
+  <div class="jobView" *ngIf="isViewJob">
+    <legend class="text-center">POSTS LOG</legend>
+    
+    <div class="col-xs-12 col-md-8 col-md-offset-2" id="container" *ngFor="let post of (GetjoblistService.todos$ | async); let index=index;trackBy: trackById">
+     
+      <div class="row">
+
+          <h2 class="h2">{{post.subject}}</h2>   
+          <div class="listgroup list-group">
+            <p class="list-item"> {{post.details}}</p>      
+          </div>
+          
+        <div class="footer">
+          <i class="h6 date"><b>Date</b>:{{post.date}}</i>
+          <span class="companyName">{{post.owner}}</span>
+            <button class="btn btn-primary footerbtn" (click)="apply(post,index)" *ngIf="!GetjoblistService.hasApplied[index]" >Apply</button>
+                <button class="btn btn-success footerbtn" disabled *ngIf="GetjoblistService.hasApplied[index]" >Applied</button>   
+        </div>
+    </div>
+     
+   </div>
+  </div>
+<!-- Job View  -->
+

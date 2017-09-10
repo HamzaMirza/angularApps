@@ -1,0 +1,59 @@
+<form class="form-horizontal col-xs-12 col-md-6 col-md-offset-2" #f="ngForm" (ngSubmit)="onSubmit(f.value)" >
+  <fieldset >
+    <legend class="text-center">PROFILE</legend>
+    <div class="form-group">
+      <label for="inputName" class="col-xs-3 control-label">Name</label>
+      <div  class="col-xs-9">
+        <input type="text" class="form-control" name="inputName" placeholder="Full Name Here" ngModel required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputFName" class="col-xs-3 control-label">Father's Name</label>
+      <div class="col-xs-9">
+        <input type="text" class="form-control" name="inputFName" placeholder="Father's Name Here" ngModel>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="select" class="col-xs-3 control-label">Latest Education</label>
+      <div class="col-xs-9">
+        <select class="form-control" name="select"  ngModel>
+          <option *ngFor="let education of educations;" >{{education}}</option>
+        </select>
+      </div>
+    </div>
+       <div class="form-group">
+      <label for="inputCGPA" class="col-xs-3 control-label">CGPA</label>
+      <div class="col-xs-9">
+        <input type="number" class="form-control" name="inputCGPA" placeholder="CGPA" ngModel>
+      </div>
+    </div>
+      <div class="form-group">
+      <label for="inputnum" class="col-xs-3 control-label">Cell #</label>
+      <div class="col-xs-9">
+        <input type="number" class="form-control" name="inputnum" placeholder="Phone Number" ngModel>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-xs-10 col-md-9 col-md-offset-3">
+        <button type="reset" class="btn btn-warning">Cancel</button>
+        <button type="submit" class="btn btn-primary pull-right">Update!</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<div  *ngIf="isformSubmitted">
+  <div  *ngIf="isCorrect;then success;else danger;">
+  </div>
+</div>
+<ng-template #success>
+  <div class="alert alert-dismissible alert-success text-center msgShow"  >
+  <button type="button" class="close" data-dismiss="alert" (click)="changeFlag()">&times;</button>
+  <strong>Profile Updated successfully!</strong>
+  </div>
+</ng-template>
+<ng-template #danger>
+  <div class="alert alert-dismissible alert-danger text-center msgShow"  >
+  <button type="button" class="close" data-dismiss="alert" (click)="changeFlag()">&times;</button>
+  <strong>Profile Updated successfully!</strong>
+  </div>
+</ng-template>
