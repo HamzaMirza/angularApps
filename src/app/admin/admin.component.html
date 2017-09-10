@@ -161,7 +161,7 @@
   </div>
 </ng-template>
 <ng-template #danger>
-  <div class="alert alert-dismissible alert-danger text-center msgShow"  >
+  <div class="alert alert-dismissible alert-danger text-center msgShow"  style="z-index:9999;" >
   <button type="button" class="close" data-dismiss="alert" (click)="changeFlag()">&times;</button>
   <strong> Update Failure!</strong>
   </div>
@@ -171,10 +171,10 @@
 <!-- Job View  -->
 
   <div class="jobView" *ngIf="isViewJob">
-    <legend class="text-center">POSTS LOG</legend>
+    <legend class="text-center">POSTS</legend>
     
     <div class="col-xs-12 col-md-8 col-md-offset-2" id="container" *ngFor="let post of (GetjoblistService.todos$ | async); let index=index;trackBy: trackById">
-     
+     <button type="button" class="close pull-right" data-dismiss="alert" (click)="deleteJob(post,i)" style="top:0px; right:0px;">&times;</button>
       <div class="row">
 
           <h2 class="h2">{{post.subject}}</h2>   

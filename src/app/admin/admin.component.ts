@@ -161,6 +161,7 @@ sTD(data,i)
 
 }
 updateStudent(data,i): void {
+   this.isformSubmitted=true;
   this.af.object('/usersDetails/' + data.key)
     .update({name:this.inputName, fatherName:this.inputfatherName,cellNum:this.inputCellNum,CGPA: this.inputCGPA,education: this.inputeducation}).then(
       success=>{
@@ -172,21 +173,24 @@ updateStudent(data,i): void {
  this.inputCellNum="";
   this.inputeducation="";
  this.inputCGPA="";
+ this.isCorrect=true;
         
       },
-      error=>console.log("error",data)
+    error=>this.isCorrect=false
     ); 
     
 }
 deleteStd(i:number,data)
 {
+   this.isformSubmitted=true;
    this.af.object('/users/' + this.studentlistService.studentkey[i]).remove().then(
      success=>{
 
           this.af.object('/usersDetails/' + data.key).remove().then(
             success=>{
               console.log("account delted",this.studentlistService.studentkey[i],",",data.key);
-            }
+              this.isCorrect=true;
+            },error=>this.isCorrect=false
           );
      }
   );
@@ -206,13 +210,16 @@ edit(i:number,data)
 
 delete(i:number,data)
 {
+   this.isformSubmitted=true;
    this.af.object('/users/' + this.GetCompanylistService.companieskey[i]).remove().then(
      success=>{
 
           this.af.object('/usersDetails/' + data.key).remove().then(
             success=>{
+              this.isCorrect=true;
               console.log("account delted",this.GetCompanylistService.companieskey[i],",",data.key);
-            }
+            },
+            error=>this.isCorrect=false
           );
      }
   );
@@ -222,6 +229,7 @@ delete(i:number,data)
 }
 save(data,i)
 {
+   this.isformSubmitted=true;
   if(this.inputName!='' &&this.inputAddress!='' &&this.inputCellNum!='' )
   {
     this.updateCompany(data,i);
@@ -233,6 +241,7 @@ save(data,i)
 
 }
 updateCompany(data,i): void {
+   this.isformSubmitted=true;
   this.af.object('/usersDetails/' + data.key)
     .update({name:this.inputName, address:this.inputAddress,cellNum:this.inputCellNum}).then(
       success=>{
@@ -242,10 +251,26 @@ updateCompany(data,i): void {
     this.inputName="";
     this.inputAddress="";
     this.inputCellNum="";
+    this.isCorrect=true;
+      
         
       },
-      error=>console.log("error",data)
+      error=>this.isCorrect=false
     ); 
     
 }
+trackById(i: number): number { return i; }
+deleteJob(data,i:number)
+{
+   this.isformSubmitted=true;
+   this.af.object('/vacancies/' + data.$key).remove().then(
+     success=>this.isCorrect=true,
+     error=>this.isCorrect=false
+  
+  );
+
+          console.log("account delted",",",data.$key);
+ 
+}
+
 }
