@@ -25,10 +25,12 @@ export class AdminComponent implements OnInit {
  isViewNotification:boolean=false;
  educations=educations;
 displayCompanyList:boolean=false;
-
+displayApplicantList:boolean=false;
+applicats: FirebaseListObservable<any[]>;
 isViewJob:boolean=false;
  date:string=new DatePipe('en-US').transform(new Date(), 'dd/MM/yyyy');
-  posts:Object[]=[];
+    posts:{subject,details,date,minQualification,owner,key}[]=[];
+
 
   
  constructor(private router:Router,public authService: AuthService,public studentlistService:GetstudentlistService,private af:AngularFireDatabase,public GetCompanylistService:GetCompanylistService,public GetjoblistService:GetjoblistService,public NotifcationsListService:NotifcationsListService) {}
@@ -65,6 +67,7 @@ isViewJob:boolean=false;
             snapshots.forEach(snapshot => 
             {
                    this.posts.push(snapshot.val()); 
+                   this.posts[this.posts.length-1].key=snapshot.key;
             });
           })
           console.log(this.studentlistService.studentList);
@@ -87,6 +90,7 @@ updateTodo2(data): void
     this.isViewJob=false;
     this.display=true;
     this.isViewNotification=false; 
+    this.displayApplicantList=false;
   }
   setDisplayStudentList()
   {
@@ -96,6 +100,8 @@ updateTodo2(data): void
     this.display=false;   
     this.displayStudentList=true;
     this.isViewNotification=false; 
+    this.displayApplicantList=false;
+    
   }
    setDisplayCompanyList()
   {
@@ -104,7 +110,9 @@ updateTodo2(data): void
     this.display=false;   
     this.displayStudentList=false;
     this.displayCompanyList=true;
-    this.isViewNotification=false; 
+    this.isViewNotification=false;
+    this.displayApplicantList=false;
+     
   }
   setDisplayVacancy()
   {
@@ -115,6 +123,8 @@ updateTodo2(data): void
     this.displayStudentList=false;
     this.displayVacancy=true;    
     this.isViewNotification=false; 
+    this.displayApplicantList=false;
+    
   }
   setDisplayJobs()
   {
@@ -125,6 +135,8 @@ updateTodo2(data): void
     this.displayStudentList=false;
     this.displayVacancy=false;   
     this.isViewNotification=false; 
+    this.displayApplicantList=false;
+    
     
   }
   setDisplayVacancyList()
@@ -136,6 +148,8 @@ updateTodo2(data): void
     this.displayStudentList=false;
     this.displayVacancy=false;   
     this.isViewNotification=true;   
+    this.displayApplicantList=false;
+    
   }
   onSubmit(data)
   {
@@ -246,7 +260,23 @@ deleteStd(i:number,data)
           console.log("account delted",this.studentlistService.studentkey[i],",",data.key);
  
 }
-
+viewApplicats(data,i:number)
+{
+  this.applicats=null;
+   this.applicats=this.af.list('/vacancies/'+data.$key+'/applicants/');
+         
+                  
+   
+      this.displayApplicantList=true;
+     this.displayVacancy=false;    
+    this.isViewJob=false;
+    this.display=false;   
+    this.displayStudentList=false;
+    this.displayCompanyList=false;
+    this.isViewNotification=false;
+ //   this.applicats
+   
+}
 edit(i:number,data)
 {
  this.showInput=i;

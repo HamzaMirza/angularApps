@@ -12,18 +12,17 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a clickable (click)="setDisplayStudentList()">View Students <span class="sr-only">(current)</span></a></li>
-        <li><a clickable (click)="setDisplayVacancy()">Post Vacancy</a></li>
+        <li><a clickable (click)="setDisplayVacancy()">View Jobs <span class="sr-only">(current)</span></a></li>
+        <li><a clickable (click)="setDisplayCompanyList()">View Companies</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
                 <li><a clickable (click)="setDisplayVacancyList()">Notifications</a></li>
 
        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{authService.userName}}<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{authService.userName}} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a clickable (click)="setDisplay()" id="editPbtn">Edit Profile</a></li>
             <li class="divider"></li>
-            <li><a clickable id="editPbtn" (click)="setDisplayLog()">View Log</a></li>
            
           </ul>
         </li>
@@ -33,9 +32,8 @@
   </div>
 </nav>
 
-
 <!-- Profile Form  -->
-<div class="CompanyDetail" *ngIf="display">
+<div class="studentDetail" *ngIf="display">
   <form class="form-horizontal col-xs-12 col-md-6 col-md-offset-2" #f="ngForm" (ngSubmit)="onSubmit(f.value)" >
   <fieldset >
     <legend class="text-center">PROFILE</legend>
@@ -46,15 +44,29 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="inputFName" class="col-xs-3 control-label">Address</label>
+      <label for="inputFName" class="col-xs-3 control-label">Father's Name</label>
       <div class="col-xs-9">
-        <input type="text" class="form-control" name="address" placeholder="Address Here" [ngModel]="details.address">
+        <input type="text" class="form-control" name="fatherName" placeholder="Father's Name Here" [ngModel]="details.fatherName" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="select" class="col-xs-3 control-label">Latest Education</label>
+      <div class="col-xs-9">
+        <select class="form-control" name="education"  [ngModel]="details.education" required>
+          <option *ngFor="let education of educations;" >{{education}}</option>
+        </select>
+      </div>
+    </div>
+       <div class="form-group">
+      <label for="inputCGPA" class="col-xs-3 control-label">CGPA</label>
+      <div class="col-xs-9">
+        <input type="number" class="form-control" name="CGPA" placeholder="CGPA" [ngModel]="details.CGPA" required>
       </div>
     </div>
       <div class="form-group">
       <label for="inputnum" class="col-xs-3 control-label">Cell #</label>
       <div class="col-xs-9">
-        <input type="number" class="form-control" name="cellNum" placeholder="Phone Number" [ngModel]="details.cellNum">
+        <input type="number" class="form-control" name="cellNum" placeholder="Phone Number" [ngModel]="details.cellNum" required>
       </div>
     </div>
     <div class="form-group">
@@ -65,88 +77,33 @@
     </div>
   </fieldset>
 </form>
-
 </div>
 <!-- Profile Form  -->
 
-<!-- View Student List  -->
-<div class="studentView" *ngIf="displayStudentList">
+
+<!-- View Company List  -->
+<div class="companyView" *ngIf="displayCompanyList">
 <table class="table table-striped table-hover ">
   <thead>
     <tr>
       <th>Sr#</th>
-      <th>Student Name</th>
-      <th>Father's Name</th>
-      <th>Qualification</th>
-      <th>CGPA</th>
+      <th>Company Name</th>
+      <th>Address</th>
       <th>Phone #</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let detail of studentlistService.studentList;let i=index;">
+    <tr *ngFor="let detail of GetCompanylistService.companyList;let i=index;">
       <td>{{i+1}}</td>
       <td>{{detail.name}}</td>
-      <td>{{detail.fatherName}}</td>
-      <td>{{detail.education}}</td>
-      <td>{{detail.CGPA}}</td>
+      <td>{{detail.address}}</td>
       <td>{{detail.cellNum}}</td>
     </tr>
    
   </tbody>
 </table> 
 </div>
-<!-- View Student List  -->
-
-
-<!-- Vacancy Form  -->
-<div class="VacancyForm" *ngIf="displayVacancy">
-  <form class="form-horizontal col-xs-12 col-md-6 col-md-offset-2" #f="ngForm" (ngSubmit)="onSubmitVacancy(f.value)" >
-  <fieldset >
-    <hr>
-    <legend class="text-center">JOB Description</legend>
-    
-    <div class="form-group">
-      <label for="inputName" class="col-xs-3 control-label">Subject</label>
-      <div  class="col-xs-9">
-        <input type="text" class="form-control" name="subject" placeholder="Subject Here" ngModel required>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="textArea" class="col-xs-3 control-label">Details</label>
-      <div class="col-xs-9">
-        <textarea class="form-control" rows="10"  name="detailVacancy" ngModel></textarea>
-        <span class="help-block">Job Description.</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-xs-8 col-xs-offset-2 control-label h3 text-center">Minimum Qualification</label>
-      <div class="col-xs-8 col-xs-offset-3">
-       
-        <br>
-          <label *ngFor="let qualification of educations" class="col-xs-4">
-            <input type="radio" name="education" value="{{qualification}}"  ngModel>
-            {{qualification}}
-          </label>
-
-         
-          <label class="col-xs-4">
-            <input type="radio" name="education" value="none" ngModel>
-             None
-          </label>
-      
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-xs-10 col-md-9 col-md-offset-3">
-        <button type="reset" class="btn btn-warning">Cancel</button>
-        <button type="submit" class="btn btn-primary pull-right">Update!</button>
-      </div>
-    </div>
-  </fieldset>
-</form>
-
-</div>
-<!-- Vacancy Form  -->
+<!-- View Company List  -->
 
 <!-- Alert MSG  -->
 <div  *ngIf="isformSubmitted">
@@ -167,12 +124,12 @@
 </ng-template>
 <!-- Alert MSG  -->
 
-<!-- Log View  -->
+<!-- Job View  -->
 
-  <div class="logView" *ngIf="isViewJob">
+  <div class="jobView" *ngIf="isViewJob">
     <legend class="text-center">POSTS LOG</legend>
     
-    <div class="col-xs-12 col-md-8 col-md-offset-2" id="container" *ngFor="let post of posts;let index=index;">
+    <div class="col-xs-12 col-md-8 col-md-offset-2" id="container" *ngFor="let post of (GetjoblistService.todos$ | async); let index=index;trackBy: trackById">
      
       <div class="row">
 
@@ -180,14 +137,19 @@
           <div class="listgroup list-group">
             <p class="list-item"> {{post.details}}</p>      
           </div>
-        <span class="footer">
-             <i class="h6"><b>Date</b>:{{post.date}}</i>
-        </span>
+          
+        <div class="footer">
+          <i class="h6 date"><b>Date</b>:{{post.date}}</i>
+          <span class="companyName">{{post.owner}}</span>
+            <button class="btn btn-primary footerbtn" (click)="apply(post,index)" *ngIf="!GetjoblistService.hasApplied[index]" >Apply</button>
+                <button class="btn btn-success footerbtn" disabled *ngIf="GetjoblistService.hasApplied[index]" >Applied</button>   
+        </div>
     </div>
      
    </div>
   </div>
-<!-- Log View  -->
+<!-- Job View  -->
+
 
 <!-- Notification View  -->
 
@@ -195,7 +157,6 @@
     <legend class="text-center">NOTIFICATIONS</legend>
     
     <div class="col-xs-12 col-md-8 col-md-offset-2" id="container" *ngFor="let post of (NotifcationsListService.notifications$ | async); let index=index;trackBy: trackById">
-     <button type="button" class="close pull-right" data-dismiss="alert" (click)="deleteJob(post,i)" style="top:0px; right:0px;">&times;</button>
       <div class="row">
    
           <div class="listgroup list-group">

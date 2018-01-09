@@ -56,7 +56,9 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
                 }
             });
           });
-         
+         this.GetjoblistService.loadhasApplied(this.authService.uid);
+    this.displayCompanyList=true;
+
   }
   display:boolean=false; 
 
@@ -102,7 +104,7 @@ details={uid:"", name:"", fatherName:"",education:"",CGPA:"",cellNum:"",key:""};
   }
   setDisplayVacancy()
   {
-    this.GetjoblistService.loadhasApplied(this.authService.uid); 
+     
     this.display=false;
     this.displayCompanyList=false;
     this.displayVacancy=true;
@@ -128,6 +130,8 @@ changeFlag()
       success=>{
         this.isCorrect=true;
         this.GetjoblistService.hasApplied[ind]=true;
+       
+        console.log(this.GetjoblistService.hasApplied);
       },
       error=>this.isCorrect=false
     ); ; 

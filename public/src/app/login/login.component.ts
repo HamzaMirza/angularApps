@@ -54,7 +54,7 @@ userName:string;
    
   }
 signup() {
-  if(this.password && this.repassword)
+  if(this.password === this.repassword)
     {
       try
       {
@@ -76,7 +76,9 @@ signup() {
                         {
                           
                           this.af.object('/usersDetails/' + snapshot.key)
-                            .update({key:snapshot.key});
+                            .update({key:snapshot.key}).then(
+                              success=> this.login()
+                            );
                         }
                     });
                   });
@@ -94,7 +96,9 @@ signup() {
                         {
                           
                           this.af.object('/usersDetails_company/' + snapshot.key)
-                            .update({key:snapshot.key});
+                            .update({key:snapshot.key}).then(
+                              success=> this.login()
+                            );
                         }
                     });
                   });
@@ -111,13 +115,15 @@ signup() {
                             {
                               
                               this.af.object('/usersDetails_student/' + snapshot.key)
-                                .update({key:snapshot.key});
+                                .update({key:snapshot.key}).then(
+                              success=> this.login()
+                            );
                             }
                         });
                       });
                }
                 
-               this.login();
+              
           },
           (error)=>this.error=error//"Email/Password not correct!"
         );
@@ -140,7 +146,8 @@ signup() {
   login() {
     try
     {
-      let tf:boolean=false;
+      var tf:boolean=false;
+      var viewed:boolean=false;
        this.authService.login(this.email, this.password).then(
          (success)=>{
           this.af.list('/users', { preserveSnapshot: true})
@@ -154,20 +161,25 @@ signup() {
                   this.router.navigate(['/'+snapshot.val().type.toLowerCase()]);
                 }
               });
+              viewed=true;
           });
-            if(!tf) 
-            {
-              this.error="Account not found";
-              this.logout();
-            }
+            
          },
         (error)=>this.error="Email/Password not correct!"
-       )
+       );
+     
        
     }
     catch(e)
     {
       this.error=e;
+    }
+    finally{
+           if(!tf && viewed) 
+            {
+              this.error="Account not found";
+              this.logout();
+            }
     }
   }
 

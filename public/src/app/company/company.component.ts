@@ -24,12 +24,12 @@ constructor(private router:Router,public authService: AuthService,public student
  isformSubmitted:boolean=false;
  isCorrect:boolean=false;
   isViewNotification:boolean=false;
-
  educations=educations;
  date:string=new DatePipe('en-US').transform(new Date(), 'dd/MM/yyyy');
-  posts:Object[]=[];
+  posts:{subject,details,date,minQualification,owner,key}[]=[];
 isViewJob:boolean=false;
-
+displayApplicantList:boolean=false;
+applicats: FirebaseListObservable<any[]>;
   
   ngOnInit() 
   {
@@ -66,10 +66,13 @@ isViewJob:boolean=false;
                 if(snapshot.val().owner==this.details.name)
                 {
                    this.posts.push(snapshot.val());
+                   this.posts[this.posts.length-1].key=snapshot.key;
                 }
             });
-          })
-      console.log(this.studentlistService.studentList);
+          });
+    this.displayStudentList=true;
+          
+      ;
   }
   updateTodo2(data): void
   {
@@ -86,7 +89,18 @@ isViewJob:boolean=false;
       error=>this.isCorrect=false
     ); 
 }
-
+viewApplicats(data,i:number)
+{
+  this.applicats=null;
+   this.applicats=this.af.list('/vacancies/'+data.key+'/applicants/');
+          this.displayApplicantList=true;
+          this.displayStudentList=false; 
+    this.displayVacancy=false; 
+    this.isViewJob=false;
+    this.display=false;
+        this.isViewNotification=false;
+        console.log(this.applicats)
+}
   setDisplay()
   {
     this.displayStudentList=false; 
@@ -94,7 +108,7 @@ isViewJob:boolean=false;
     this.isViewJob=false;
     this.display=true;
         this.isViewNotification=false;   
-
+this.displayApplicantList=false;
   }
   setDisplayStudentList()
   {
@@ -102,7 +116,9 @@ isViewJob:boolean=false;
     this.displayVacancy=false;    
     this.isViewJob=false;
     this.displayStudentList=true;
-        this.isViewNotification=false;   
+        this.isViewNotification=false;
+this.displayApplicantList=false;
+           
 
   }
   setDisplayVacancy()
@@ -111,7 +127,9 @@ isViewJob:boolean=false;
     this.displayStudentList=false;
     this.isViewJob=false;
     this.displayVacancy=true; 
-        this.isViewNotification=false;   
+        this.isViewNotification=false; 
+this.displayApplicantList=false;
+          
 
   }
   setDisplayLog()
@@ -120,7 +138,9 @@ isViewJob:boolean=false;
     this.displayStudentList=false;
     this.isViewJob=true;
     this.displayVacancy=false; 
-        this.isViewNotification=false;   
+        this.isViewNotification=false;
+this.displayApplicantList=false;
+           
 
   }
    setDisplayVacancyList()
@@ -129,7 +149,9 @@ isViewJob:boolean=false;
     this.display=false;   
     this.displayStudentList=false;
     this.displayVacancy=false;   
-    this.isViewNotification=true;   
+    this.isViewNotification=true; 
+this.displayApplicantList=false;
+      
   }
   onSubmit(data)
   {
